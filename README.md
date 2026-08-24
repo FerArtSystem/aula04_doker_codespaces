@@ -1,6 +1,6 @@
 # aula04_doker_codespaces
 Está é a aula 04, feita no dia 24/08/2026 a qual tratará de Doker e Codespaces
-
+'''
 $ docker --version
 Docker version 29.3.0-1, build 5927d80c76b3ce5cf782be818922966e8a0d87a3
 
@@ -65,4 +65,4 @@ Server:
   127.0.0.0/8
  Live Restore Enabled: false
  Firewall Backend: iptables
- 
+ '''
