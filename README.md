@@ -66,3 +66,71 @@ Server:
  Live Restore Enabled: false
  Firewall Backend: iptables
  '''
+
+'''
+$ docker pull nginx:latest
+latest: Pulling from library/nginx
+7eb55399d6de: Pull complete 
+f530c3e421fc: Pull complete 
+5d480233f531: Pull complete 
+746b934a8960: Pull complete 
+5508f6432d3e: Pull complete 
+128fcc7b23b0: Pull complete 
+26c307b5e35a: Pull complete 
+3976f7b8a9d7: Download complete 
+81dd0279e705: Download complete 
+Digest: sha256:0d4374c710a9649200e84f8ef8dbdd4fa76c0c107839cd50f1e42a63916b0f2e
+Status: Downloaded newer image for nginx:latest
+docker.io/library/nginx:latest
+
+
+$ docker images                                                                                                      i Info →   U  In Use
+IMAGE          ID             DISK USAGE   CONTENT SIZE   EXTRA
+nginx:latest   0d4374c710a9        241MB         66.2MB        
+
+$ docker run -d --name meu_nginx -p 8080:80 nginx:latest
+e358c24f838dfc7731783be507a97de0801aedc268d90c12cd33bdc5cca3276b
+
+$ docker ps
+CONTAINER ID   IMAGE          COMMAND                  CREATED              STATUS              PORTS                                     NAMES
+e358c24f838d   nginx:latest   "/docker-entrypoint.…"   About a minute ago   Up About a minute   0.0.0.0:8080->80/tcp, [::]:8080->80/tcp   meu_nginx
+
+$ docker ps --filter name=meu_nginx
+CONTAINER ID   IMAGE          COMMAND                  CREATED              STATUS              PORTS                                     NAMES
+e358c24f838d   nginx:latest   "/docker-entrypoint.…"   About a minute ago   Up About a minute   0.0.0.0:8080->80/tcp, [::]:8080->80/tcp   meu_nginx
+
+$ docker logs meu_nginx
+/docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration
+/docker-entrypoint.sh: Looking for shell scripts in /docker-entrypoint.d/
+/docker-entrypoint.sh: Launching /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh
+10-listen-on-ipv6-by-default.sh: info: Getting the checksum of /etc/nginx/conf.d/default.conf
+10-listen-on-ipv6-by-default.sh: info: Enabled listen on IPv6 in /etc/nginx/conf.d/default.conf
+/docker-entrypoint.sh: Sourcing /docker-entrypoint.d/15-local-resolvers.envsh
+/docker-entrypoint.sh: Launching /docker-entrypoint.d/20-envsubst-on-templates.sh
+/docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worker-processes.sh
+/docker-entrypoint.sh: Configuration complete; ready for start up
+2026/08/24 23:37:30 [notice] 1#1: using the "epoll" event method
+2026/08/24 23:37:30 [notice] 1#1: nginx/1.31.4
+2026/08/24 23:37:30 [notice] 1#1: built by gcc 14.2.0 (Debian 14.2.0-19) 
+2026/08/24 23:37:30 [notice] 1#1: OS: Linux 6.8.0-1052-azure
+2026/08/24 23:37:30 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1024:524288
+2026/08/24 23:37:30 [notice] 1#1: start worker processes
+2026/08/24 23:37:30 [notice] 1#1: start worker process 29
+2026/08/24 23:37:30 [notice] 1#1: start worker process 30
+
+$ curl -I http://localhost:8080
+HTTP/1.1 200 OK
+Server: nginx/1.31.4
+Date: Mon, 24 Aug 2026 23:40:00 GMT
+Content-Type: text/html
+Content-Length: 896
+Last-Modified: Tue, 11 Aug 2026 20:02:04 GMT
+Connection: keep-alive
+ETag: "6a7b7fbc-380"
+Accept-Ranges: bytes
+
+$ docker exec -it meu_nginx sh
+# ls /usr/share/nginx/html
+50x.html  index.html
+'''
+ ![alt text](image.png)
