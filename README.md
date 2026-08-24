@@ -133,4 +133,5 @@ $ docker exec -it meu_nginx sh
 # ls /usr/share/nginx/html
 50x.html  index.html
 '''
+
  ![alt text](image.png)
