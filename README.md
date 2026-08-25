@@ -316,3 +316,42 @@ mysql: [Warning] Using a password on the command line interface can be insecure.
 |  1 | Dados persistidos com volume Docker |
 +----+-------------------------------------+
 '''
+'''
+↑ ACIMA AS EVIDÊNCIAS NA ÍNTEGRA QUE COLETEI NO CONTEXTO DAS EXECUÇÕES ↑  
+
+↓ ABAIXO AS PERGUNTAS E RESPOSTAS DE FORMA MAIS OBJETIVAS ↓
+### 1. Qual é a diferença entre uma imagem Docker e um contêiner?
+Uma imagem Docker é um modelo imutável que contém os arquivos, as dependências, as configurações e as instruções necessárias para executar uma aplicação. Um contêiner é uma instância criada a partir dessa imagem, ou seja, é a aplicação efetivamente sendo executada. Uma mesma imagem pode ser utilizada para criar vários contêineres.
+
+Neste exercício, `nginx:latest` e `aula-docker:1.0` são imagens. Já `meu_nginx` é o nome de um contêiner criado a partir da imagem `nginx:latest`.
+
+
+### 2. O que significa o mapeamento de portas 8080:80?
+O mapeamento `8080:80` associa a porta `8080` do ambiente hospedeiro à porta `80` do contêiner. A porta localizada antes dos dois-pontos pertence ao ambiente do Codespace, enquanto a porta localizada depois dos dois-pontos pertence ao contêiner.
+
+Neste exercício, o Nginx e o phpMyAdmin executam internamente na porta `80`, mas podem ser acessados pela porta `8080` encaminhada pelo GitHub Codespaces. Portanto, uma solicitação recebida na porta `8080` é direcionada para a porta `80` do respectivo contêiner.
+
+
+### 3. Qual é a função do Dockerfile neste exercício?
+O Dockerfile descreve as instruções utilizadas pelo Docker para construir a imagem personalizada `aula-docker:1.0`. Neste exercício, ele utiliza o Ubuntu 24.04 como imagem-base, define `/app` como diretório de trabalho, copia o arquivo `hello.txt` para dentro da imagem e estabelece o comando que deverá exibir o conteúdo desse arquivo quando o contêiner for iniciado.
+
+Dessa forma, o Dockerfile permite que a imagem seja reconstruída de maneira padronizada e reproduzível por qualquer pessoa que tenha acesso aos arquivos do repositório.
+
+
+### 4. Por que o serviço phpMyAdmin consegue acessar o MySQL usando `PMA_HOST: mysql`?
+O Docker Compose cria automaticamente uma rede para os serviços definidos no arquivo `compose.yaml`. Dentro dessa rede, cada serviço pode ser localizado por meio do próprio nome declarado na configuração.
+
+Como o banco de dados foi definido como o serviço `mysql`, esse nome funciona como um endereço interno. A configuração `PMA_HOST: mysql` informa ao phpMyAdmin que ele deve procurar o servidor de banco de dados chamado `mysql`. O Docker resolve esse nome para o endereço interno do contêiner correspondente. A conexão é realizada pela porta interna `3306`, definida em `PMA_PORT`.
+
+
+### 5. Qual é a função do volume `mysql-data`?
+O volume `mysql-data` armazena os dados do MySQL fora do ciclo de vida dos contêineres. Ele está associado ao diretório `/var/lib/mysql`, utilizado pelo MySQL para guardar bancos, tabelas e registros.
+
+Por esse motivo, os dados continuam existindo mesmo quando os contêineres do MySQL e do phpMyAdmin são removidos e recriados. Isso foi comprovado no exercício: depois da execução de `docker compose down` e `docker compose up -d`, o registro “Dados persistidos com volume Docker” continuou disponível na tabela `mensagem`.
+
+
+### 6. O que aconteceria com os dados se o ambiente fosse encerrado com `docker compose down -v`?
+A opção `-v` manda o Docker Compose remover também os volumes associados ao ambiente. Portanto, o comando `docker compose down -v` removeria os contêineres, a rede criada pelo Compose e o volume `mysql-data`.
+
+Como os arquivos do banco estão armazenados nesse volume, os dados seriam apagados, incluindo a tabela `mensagem` e o registro inserido durante a atividade. Em uma próxima execução de `docker compose up -d`, seria criado um novo volume vazio e o banco seria inicializado novamente. As imagens Docker não seriam removidas por esse comando.
+'''
