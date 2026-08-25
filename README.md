@@ -178,3 +178,141 @@ aula-mysql        mysql:8.4           "docker-entrypoint.s…"   mysql        2 
 aula-phpmyadmin   phpmyadmin:latest   "/docker-entrypoint.…"   phpmyadmin   2 seconds ago   Up Less than a second   0.0.0.0:8080->80/tcp, [::]:8080->80/tcp
 @FerArtSystem ➜ /workspaces/aula04_doker_codespaces (main) $ 
 '''
+![alt text](image-2.png)
+
+![alt text](image-3.png)
+
+![alt text](image-4.png)
+
+'''
+
+@FerArtSystem ➜ /workspaces/aula04_doker_codespaces (main) $ docker compose config
+docker compose ps
+docker compose logs mysql --tail=50
+name: aula04_doker_codespaces
+services:
+  mysql:
+    container_name: aula-mysql
+    environment:
+      MYSQL_DATABASE: aula_db
+      MYSQL_ROOT_PASSWORD: root_password
+    image: mysql:8.4
+    networks:
+      default: null
+    ports:
+      - mode: ingress
+        target: 3306
+        published: "3306"
+        protocol: tcp
+    volumes:
+      - type: volume
+        source: mysql-data
+        target: /var/lib/mysql
+        volume: {}
+  phpmyadmin:
+    container_name: aula-phpmyadmin
+    depends_on:
+      mysql:
+        condition: service_started
+        required: true
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: "3306"
+    image: phpmyadmin:latest
+    networks:
+      default: null
+    ports:
+      - mode: ingress
+        target: 80
+        published: "8080"
+        protocol: tcp
+networks:
+  default:
+    name: aula04_doker_codespaces_default
+volumes:
+  mysql-data:
+    name: aula04_doker_codespaces_mysql-data
+NAME              IMAGE               COMMAND                  SERVICE      CREATED         STATUS         PORTS
+aula-mysql        mysql:8.4           "docker-entrypoint.s…"   mysql        3 minutes ago   Up 2 minutes   0.0.0.0:3306->3306/tcp, [::]:3306->3306/tcp, 33060/tcp
+aula-phpmyadmin   phpmyadmin:latest   "/docker-entrypoint.…"   phpmyadmin   3 minutes ago   Up 2 minutes   0.0.0.0:8080->80/tcp, [::]:8080->80/tcp
+aula-mysql  | 2026-08-25 00:58:45+00:00 [Note] [Entrypoint]: Entrypoint script for MySQL Server 8.4.11-1.el9 started.
+aula-mysql  | 2026-08-25 00:58:47+00:00 [Note] [Entrypoint]: Switching to dedicated user 'mysql'
+aula-mysql  | 2026-08-25 00:58:47+00:00 [Note] [Entrypoint]: Entrypoint script for MySQL Server 8.4.11-1.el9 started.
+aula-mysql  | 2026-08-25 00:58:47+00:00 [Note] [Entrypoint]: Initializing database files
+aula-mysql  | 2026-08-25T00:58:47.817756Z 0 [System] [MY-015017] [Server] MySQL Server Initialization - start.
+aula-mysql  | 2026-08-25T00:58:47.820123Z 0 [System] [MY-013169] [Server] /usr/sbin/mysqld (mysqld 8.4.11) initializing of server in progress as process 78
+aula-mysql  | 2026-08-25T00:58:47.897165Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+aula-mysql  | 2026-08-25T00:58:50.686396Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+aula-mysql  | 2026-08-25T00:58:53.212602Z 6 [Warning] [MY-010453] [Server] root@localhost is created with an empty password ! Please consider switching off the --initialize-insecure option.
+aula-mysql  | 2026-08-25T00:58:57.993365Z 0 [System] [MY-015018] [Server] MySQL Server Initialization - end.
+aula-mysql  | 2026-08-25 00:58:58+00:00 [Note] [Entrypoint]: Database files initialized
+aula-mysql  | 2026-08-25 00:58:58+00:00 [Note] [Entrypoint]: Starting temporary server
+aula-mysql  | 2026-08-25T00:58:58.107193Z 0 [System] [MY-015015] [Server] MySQL Server - start.
+aula-mysql  | 2026-08-25T00:58:58.409015Z 0 [System] [MY-010116] [Server] /usr/sbin/mysqld (mysqld 8.4.11) starting as process 117
+aula-mysql  | 2026-08-25T00:58:58.436805Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+aula-mysql  | 2026-08-25T00:59:02.335262Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+aula-mysql  | 2026-08-25T00:59:02.596112Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+aula-mysql  | 2026-08-25T00:59:02.596150Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+aula-mysql  | 2026-08-25T00:59:02.599044Z 0 [Warning] [MY-011810] [Server] Insecure configuration for --pid-file: Location '/var/run/mysqld' in the path is accessible to all OS users. Consider choosing a different directory.
+aula-mysql  | 2026-08-25T00:59:02.615647Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Socket: /var/run/mysqld/mysqlx.sock
+aula-mysql  | 2026-08-25T00:59:02.616069Z 0 [System] [MY-010931] [Server] /usr/sbin/mysqld: ready for connections. Version: '8.4.11'  socket: '/var/run/mysqld/mysqld.sock'  port: 0  MySQL Community Server - GPL.
+aula-mysql  | 2026-08-25 00:59:02+00:00 [Note] [Entrypoint]: Temporary server started.
+aula-mysql  | '/var/lib/mysql/mysql.sock' -> '/var/run/mysqld/mysqld.sock'
+aula-mysql  | 2026-08-25 00:59:05+00:00 [Note] [Entrypoint]: Creating database aula_db
+aula-mysql  | 
+aula-mysql  | 2026-08-25 00:59:05+00:00 [Note] [Entrypoint]: Stopping temporary server
+aula-mysql  | 2026-08-25T00:59:05.848887Z 11 [System] [MY-013172] [Server] Received SHUTDOWN from user root. Shutting down mysqld (Version: 8.4.11).
+aula-mysql  | 2026-08-25T00:59:07.227903Z 0 [System] [MY-010910] [Server] /usr/sbin/mysqld: Shutdown complete (mysqld 8.4.11)  MySQL Community Server - GPL.
+aula-mysql  | 2026-08-25T00:59:07.227943Z 0 [System] [MY-015016] [Server] MySQL Server - end.
+aula-mysql  | 2026-08-25 00:59:07+00:00 [Note] [Entrypoint]: Temporary server stopped
+aula-mysql  | 
+aula-mysql  | 2026-08-25 00:59:07+00:00 [Note] [Entrypoint]: MySQL init process done. Ready for start up.
+aula-mysql  | 
+aula-mysql  | 2026-08-25T00:59:07.871334Z 0 [System] [MY-015015] [Server] MySQL Server - start.
+aula-mysql  | 2026-08-25T00:59:08.131044Z 0 [System] [MY-010116] [Server] /usr/sbin/mysqld (mysqld 8.4.11) starting as process 1
+aula-mysql  | 2026-08-25T00:59:08.137000Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+aula-mysql  | 2026-08-25T00:59:08.657686Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+aula-mysql  | 2026-08-25T00:59:09.216424Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+aula-mysql  | 2026-08-25T00:59:09.216464Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+aula-mysql  | 2026-08-25T00:59:09.219498Z 0 [Warning] [MY-011810] [Server] Insecure configuration for --pid-file: Location '/var/run/mysqld' in the path is accessible to all OS users. Consider choosing a different directory.
+aula-mysql  | 2026-08-25T00:59:09.243501Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060, socket: /var/run/mysqld/mysqlx.sock
+aula-mysql  | 2026-08-25T00:59:09.243609Z 0 [System] [MY-010931] [Server] /usr/sbin/mysqld: ready for connections. Version: '8.4.11'  socket: '/var/run/mysqld/mysqld.sock'  port: 3306  MySQL Community Server - GPL.
+@FerArtSystem ➜ /workspaces/aula04_doker_codespaces (main) $ git add README.md
+@FerArtSystem ➜ /workspaces/aula04_doker_codespaces (main) $ git commit -m "Atualizações da parte 4"
+[main 3d81885] Atualizações da parte 4
+ 1 file changed, 32 insertions(+)
+@FerArtSystem ➜ /workspaces/aula04_doker_codespaces (main) $ git push
+Enumerating objects: 5, done.
+Counting objects: 100% (5/5), done.
+Delta compression using up to 2 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 1.00 KiB | 1.00 MiB/s, done.
+Total 3 (delta 2), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (2/2), completed with 2 local objects.
+To https://github.com/FerArtSystem/aula04_doker_codespaces
+   58f58d7..3d81885  main -> main
+@FerArtSystem ➜ /workspaces/aula04_doker_codespaces (main) $ docker compose down
+docker compose up -d
+docker compose ps
+[+] Running 3/3
+ ✔ Container aula-phpmyadmin                Removed                                                                   1.2s 
+ ✔ Container aula-mysql                     Removed                                                                   1.7s 
+ ✔ Network aula04_doker_codespaces_default  Removed                                                                   0.1s 
+[+] Running 3/3
+ ✔ Network aula04_doker_codespaces_default  Created                                                                   0.1s 
+ ✔ Container aula-mysql                     Started                                                                   0.4s 
+ ✔ Container aula-phpmyadmin                Started                                                                   0.6s 
+NAME              IMAGE               COMMAND                  SERVICE      CREATED        STATUS                  PORTS
+aula-mysql        mysql:8.4           "docker-entrypoint.s…"   mysql        1 second ago   Up Less than a second   0.0.0.0:3306->3306/tcp, [::]:3306->3306/tcp, 33060/tcp
+aula-phpmyadmin   phpmyadmin:latest   "/docker-entrypoint.…"   phpmyadmin   1 second ago   Up Less than a second   0.0.0.0:8080->80/tcp, [::]:8080->80/tcp
+@FerArtSystem ➜ /workspaces/aula04_doker_codespaces (main) $ docker volume ls
+docker compose exec mysql mysql -uroot -proot_password -e "SELECT * FROM aula_db.mensagem;"
+DRIVER    VOLUME NAME
+local     aula04_doker_codespaces_mysql-data
+mysql: [Warning] Using a password on the command line interface can be insecure.
++----+-------------------------------------+
+| id | texto                               |
++----+-------------------------------------+
+|  1 | Dados persistidos com volume Docker |
++----+-------------------------------------+
+'''
