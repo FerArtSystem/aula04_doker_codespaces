@@ -135,3 +135,14 @@ $ docker exec -it meu_nginx sh
 '''
 
  ![alt text](image.png)
+
+'''
+@FerArtSystem ➜ /workspaces/aula04_doker_codespaces (main) $ docker stop meu_nginx
+meu_nginx
+@FerArtSystem ➜ /workspaces/aula04_doker_codespaces (main) $ docker rm meu_nginx
+meu_nginx
+@FerArtSystem ➜ /workspaces/aula04_doker_codespaces (main) $ docker ps -a
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+@FerArtSystem ➜ /workspaces/aula04_doker_codespaces (main) $ 
+'''
+![alt text](image-1.png)
