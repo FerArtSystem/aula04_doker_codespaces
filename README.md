@@ -146,3 +146,35 @@ CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
 @FerArtSystem ➜ /workspaces/aula04_doker_codespaces (main) $ 
 '''
 ![alt text](image-1.png)
+
+'''
+@FerArtSystem ➜ /workspaces/aula04_doker_codespaces (main) $ git add compose.yaml
+@FerArtSystem ➜ /workspaces/aula04_doker_codespaces (main) $ git commit -m "Atualiza Compose da atividade"
+[main 58f58d7] Atualiza Compose da atividade
+ 1 file changed, 25 insertions(+)
+ create mode 100644 compose.yaml
+@FerArtSystem ➜ /workspaces/aula04_doker_codespaces (main) $ git push
+Enumerating objects: 4, done.
+Counting objects: 100% (4/4), done.
+Delta compression using up to 2 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 515 bytes | 257.00 KiB/s, done.
+Total 3 (delta 1), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (1/1), completed with 1 local object.
+To https://github.com/FerArtSystem/aula04_doker_codespaces
+   b5135bd..58f58d7  main -> main
+@FerArtSystem ➜ /workspaces/aula04_doker_codespaces (main) $ docker compose up -d
+docker compose ps
+[+] Running 35/35
+ ✔ mysql Pulled                                                                                                      53.4s 
+ ✔ phpmyadmin Pulled                                                                                                 45.4s 
+[+] Running 4/4
+ ✔ Network aula04_doker_codespaces_default    Created                                                                 0.1s 
+ ✔ Volume aula04_doker_codespaces_mysql-data  Created                                                                 0.0s 
+ ✔ Container aula-mysql                       Started                                                                 1.3s 
+ ✔ Container aula-phpmyadmin                  Started                                                                 1.6s 
+NAME              IMAGE               COMMAND                  SERVICE      CREATED         STATUS                  PORTS
+aula-mysql        mysql:8.4           "docker-entrypoint.s…"   mysql        2 seconds ago   Up 1 second             0.0.0.0:3306->3306/tcp, [::]:3306->3306/tcp, 33060/tcp
+aula-phpmyadmin   phpmyadmin:latest   "/docker-entrypoint.…"   phpmyadmin   2 seconds ago   Up Less than a second   0.0.0.0:8080->80/tcp, [::]:8080->80/tcp
+@FerArtSystem ➜ /workspaces/aula04_doker_codespaces (main) $ 
+'''
